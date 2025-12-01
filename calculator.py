@@ -1,9 +1,4 @@
 # calculator.py
-import os 
-
-DEBUG = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
-
-# calculator.py
 import os
 
 DEBUG = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
