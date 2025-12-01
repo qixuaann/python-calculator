@@ -68,23 +68,23 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: .coverage
 
       - name: Debug information
         if: runner.debug == '1'
         run: |
             echo "Runner OS: ${{ runner.os }}"
-            echo "Python version: ${{ matrix.python-version }}"
+            echo "Python version: ${{ inputs.python-version }}"
             env
 
       - name: Run tests with coverage
         id: test-step
         run: pytest -vv -s --cov=calculator --cov-report=term-missing
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: .coverage
 
   deploy:
     name: Deploy to Production
@@ -104,6 +104,7 @@ jobs:
 
   test-scenarios:
     name: Test ${{ matrix.scenario }}
+    needs: lint
     runs-on: ubuntu-latest
     
     strategy:
