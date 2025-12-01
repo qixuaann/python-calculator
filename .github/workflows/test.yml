@@ -1,6 +1,6 @@
 # .github/workflows/test.yml
 
-name: Run Tests
+name: Run Tests with Caching
 
 # This workflow runs when you push code or create a pull request
 on:
@@ -14,7 +14,9 @@ jobs:
   test:
     name: Test Calculator
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
     steps:
       # Step 1: Get the code from your repository
       - name: Checkout code
@@ -25,7 +27,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      # Cache pip dependencies
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+                
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
