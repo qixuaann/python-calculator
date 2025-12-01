@@ -1,6 +1,6 @@
 # .github/workflows/test.yml
 
-name: Run Tests with Caching
+name: Run Tests with Secrets
 
 # This workflow runs when you push code or create a pull request
 on:
@@ -17,6 +17,13 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11', '3.12']
+
+    # Set environment variables for the entire job
+    env:
+      DEBUG_MODE: 'true'
+      DATABASE_URL: 'sqlite:///test.db'
+    
+
     steps:
       # Step 1: Get the code from your repository
       - name: Checkout code
@@ -39,13 +46,15 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-                
+
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      # Step 4: Run the tests
+      # Step 4: Run the tests with secrets
       - name: Run pytest
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
         run: pytest -v
