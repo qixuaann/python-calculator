@@ -1,19 +1,15 @@
-# test_calculator.py
-
 import pytest
 from calculator import add, power, subtract, multiply, divide
 
-def test_add():
+@pytest.mark.parametrize("a,b,expected", [(2, 3, 5), (-1, 1, 0), (0, 0, 0)])
+def test_add(a, b, expected):
     """Test addition function."""
-    assert add(2, 3) == 5
-    assert add(-1, 1) == 0
-    assert add(0, 0) == 0
+    assert add(a, b) == expected
 
-def test_subtract():
+@pytest.mark.parametrize("a,b,expected", [(5, 3, 2), (0, 5, -5), (-3, -2, -1)])
+def test_subtract(a, b, expected):
     """Test subtraction function."""
-    assert subtract(5, 3) == 2
-    assert subtract(0, 5) == -5
-    assert subtract(-3, -2) == -1
+    assert subtract(a, b) == expected
 
 def test_multiply():
     """Test multiplication function."""
@@ -27,11 +23,13 @@ def test_divide():
     assert divide(9, 3) == 3
     assert divide(-10, 2) == -5
 
+@pytest.mark.edge
 def test_divide_by_zero():
     """Test that dividing by zero raises an error."""
     with pytest.raises(ValueError):
         divide(10, 0)
 
+@pytest.mark.slow
 def test_power():
     """Test power function."""
     assert power(2, 3) == 8
