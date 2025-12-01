@@ -1,6 +1,7 @@
 import pytest
 from calculator import add, power, subtract, multiply, divide
 
+
 @pytest.mark.parametrize("a,b,expected", [(2, 3, 5), (-1, 1, 0), (0, 0, 0)])
 def test_add(a, b, expected):
     """Test addition function."""
@@ -40,3 +41,5 @@ def test_power():
     assert power(2, 3) == 8
     assert power(5, 0) == 1
     assert power(3, 2) == 9
+
+    
