@@ -1,6 +1,7 @@
 # calculator.py
 import os
 
+
 DEBUG = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 
 def add(a, b):
@@ -43,3 +44,4 @@ def power(a, b):
     if DEBUG:
         print(f"DEBUG: {a} ^ {b} = {result}")
     return result
+
